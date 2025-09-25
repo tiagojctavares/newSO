@@ -157,6 +157,9 @@
             font-size: 5em;
             animation: stamp 1.5s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
             opacity: 0;
+            /* --- ESTA É A CORREÇÃO --- */
+            color: transparent; /* Esconde o emoji original */
+            text-shadow: 0 0 0 var(--accent-color); /* Cria uma "sombra" colorida no lugar */
         }
         
         @keyframes stamp {
@@ -206,11 +209,11 @@
         <!-- Etapa 0: Início -->
         <div id="stage-0" class="stage active">
             <h1>O jogo vai começar...</h1>
-            <p>A melhor dupla de arbitros tem um anúncio a fazer.</p>
+            <p>A melhor dupla de árbitros tem um anúncio a fazer.</p>
             <button onclick="startReveal()">PIIIII! (Apito Inicial)</button>
         </div>
 
-        <!-- Etapa 1: A Análise -->
+        <!-- O resto do HTML continua exatamente igual -->
         <div id="stage-1" class="stage">
             <h2>Processando Nova Diretiva...</h2>
             <div class="analysis-container">
@@ -229,7 +232,6 @@
             </div>
         </div>
 
-        <!-- Etapa 2: O Veredicto -->
         <div id="stage-2" class="stage">
             <h2 class="typing">Processo 100% Concluído.</h2>
             <p style="animation: fadeIn 2s ease 2s; opacity: 0; animation-fill-mode: forwards;">
@@ -240,19 +242,16 @@
             </p>
         </div>
 
-        <!-- Etapa 3: A Grande Revelação -->
         <div id="stage-3" class="stage">
             <p>A nossa equipa vai ter um novo membro!</p>
             <h1 class="final-reveal">VAMOS SER PAIS!</h1>
             <div class="footprint">👣</div>
         </div>
         
-        <!-- Etapa 4: Conclusão -->
         <div id="stage-4" class="stage">
              <h2>O jogo mais importante das nossas vidas vai começar!</h2>
              <p>Chegada prevista: <strong>Maio 2026</strong></p> <!-- <<< ALTERE A DATA AQUI -->
         </div>
-
     </div>
 
     <script>
@@ -264,7 +263,6 @@
         }
 
         function startReveal() {
-            // Apenas a lógica da animação visual, sem qualquer som.
             showStage('stage-1');
             
             setTimeout(() => {

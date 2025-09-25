@@ -201,15 +201,12 @@
         <div class="center-line"></div>
         <div class="center-circle"></div>
     </div>
-    
-    <!-- NOVO: Elemento de áudio para o som do apito -->
-    <audio id="whistleSound" src="https://actions.google.com/sounds/v1/sports/whistle_blowing_2.ogg" preload="auto"></audio>
 
     <div class="reveal-card">
         <!-- Etapa 0: Início -->
         <div id="stage-0" class="stage active">
             <h1>O jogo vai começar...</h1>
-            <p>A melhor dupla de arbitragem tem um anúncio a fazer.</p>
+            <p>A melhor dupla de arbitros tem um anúncio a fazer.</p>
             <button onclick="startReveal()">PIIIII! (Apito Inicial)</button>
         </div>
 
@@ -260,41 +257,24 @@
 
     <script>
         function showStage(stageId) {
-            // Esconde todas as etapas
             document.querySelectorAll('.stage').forEach(stage => {
                 stage.classList.remove('active');
             });
-            // Mostra a etapa desejada
             document.getElementById(stageId).classList.add('active');
         }
 
         function startReveal() {
-            // --- CÓDIGO DE ÁUDIO MELHORADO ---
-            const whistle = document.getElementById('whistleSound');
-            const playPromise = whistle.play();
-
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    // Não fazemos nada se falhar, a animação continua
-                    console.error("Erro ao tocar o áudio:", error);
-                });
-            }
-            // --- FIM DO CÓDIGO DE ÁUDIO ---
-
-            // Etapa 1: Análise
+            // Apenas a lógica da animação visual, sem qualquer som.
             showStage('stage-1');
             
-            // Etapa 2: Veredicto (após 4 segundos)
             setTimeout(() => {
                 showStage('stage-2');
-            }, 4500);
+            }, 4000);
 
-            // Etapa 3: Revelação (após 8 segundos)
             setTimeout(() => {
                 showStage('stage-3');
             }, 8500);
             
-            // Etapa 4: Conclusão (após 12 segundos)
             setTimeout(() => {
                 showStage('stage-4');
             }, 12500);

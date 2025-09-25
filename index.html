@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Update: Novo Membro (Processando...)</title>
+    <style>
+        /* Estilo para simular um ecrã de terminal */
+        body {
+            background-color: #0d0d0d; /* Fundo muito escuro */
+            color: #00ff41; /* Cor verde "Matrix" */
+            font-family: 'Consolas', 'Monospace', monospace; /* Fonte monoespaçada */
+            padding: 20px;
+            font-size: 1.2em;
+            line-height: 1.4;
+            overflow: hidden; /* Evita barras de scroll desnecessárias */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            min-height: 100vh;
+        }
+
+        .log-line {
+            opacity: 0;
+            margin-bottom: 5px;
+            transition: opacity 1s ease-in-out; /* Transição suave para o aparecimento */
+        }
+
+        /* Estilos específicos para a revelação (o "Bug") */
+        .error {
+            color: #ff0000; /* Cor vermelha para o erro */
+            font-weight: bold;
+            font-size: 1.4em;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        .analysis {
+            color: #00ffff; /* Cor ciano para a análise da psicóloga */
+            font-style: italic;
+        }
+
+        .referee {
+            color: #ffff00; /* Cor amarela para o árbitro */
+            font-weight: bold;
+            font-size: 1.6em;
+            text-align: center;
+            width: 100%;
+            margin-top: 30px;
+            padding: 10px;
+            border: 3px solid #ffff00;
+            animation: blink 1s infinite; /* Animação de piscar para o cartão */
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="terminal-output">
+        </div>
+
+    <script>
+        const terminalOutput = document.getElementById('terminal-output');
+        // Usar '\u2713' para o símbolo de 'tick' (certo)
+        // Usar '\u2717' para o símbolo de 'cross' (errado)
+
+        const lines = [
+            '[\u2713] Inicializando Sistema Operacional Familiar (SOF) v2.0...',
+            '[\u2713] Verificando Nível de Dependência...',
+            '[\u2713] Módulo Arbitragem carregado. Regras estritas aplicadas.',
+            '[\u2713] Módulo Psicologia carregado. Análise de humor iniciada.',
+            '[\u2713] Processando rotinas diárias. Tudo OK.',
+            '[\u2717] AVISO CRÍTICO: DETETADA MUDANÇA DE ESTADO NO KERNEL.',
+            '<span class="error">[\u2717] ERRO FATAL: Falha na Verificação da Capacidade do Sistema.</span>',
+            '<span class="error">Causa: Novo Pacote de Dependência (BEBÉ.zip) detetado no SOF.</span>',
+            '<span class="error">Data Prevista: MAIO/2026</span>',
+            '<span class="analysis">*** ANÁLISE PSICOLÓGICA (POST-MORTEM) ***</span>',
+            '<span class="analysis">Sintoma: Ansiedade de Ninho e Pesquisas Compulsivas (Carrinhos de Bebé).</span>',
+            '<span class="analysis">Diagnóstico: Crise Existencial Positiva. Solução: Adaptação URGENTE.</span>',
+            '<span class="referee">$$$ DECISÃO DO ÁRBITRO: CARTÃO AMARELO (NOITES MAL DORMIDAS) $$$</span>',
+            '<span class="referee">*** O JOGO MUDOU! A EQUIPA VAI SER REFORÇADA! ***</span>'
+        ];
+
+        let index = 0;
+
+        function displayNextLine() {
+            if (index < lines.length) {
+                const newLine = document.createElement('div');
+                newLine.className = 'log-line';
+                // Usamos innerHTML para permitir as tags <span> dentro do array lines
+                newLine.innerHTML = lines[index];
+                terminalOutput.appendChild(newLine);
+
+                // Força o reflow para garantir a animação
+                void newLine.offsetWidth;
+                newLine.style.opacity = 1;
+
+                index++;
+                
+                // Tempo de espera entre cada linha (mais longo para as de erro/revelação)
+                let delay = 1000; // 1 segundo
+                if (lines[index - 1].includes('ERRO FATAL') || lines[index - 1].includes('DECISÃO DO ÁRBITRO')) {
+                    delay = 2000; // 2 segundos para as linhas importantes
+                }
+                
+                setTimeout(displayNextLine, delay);
+            }
+        }
+
+        // Inicia o processo após um pequeno atraso
+        setTimeout(displayNextLine, 500); 
+    </script>
+
+</body>
+</html>

@@ -3,116 +3,302 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Update: Novo Membro (Processando...)</title>
+    <title>Um Anúncio Especial...</title>
     <style>
-        /* Estilo para simular um ecrã de terminal */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Poppins:wght@700&display=swap');
+
+        :root {
+            --court-color: #0069c0; /* Azul do Futsal */
+            --lines-color: #ffffff;
+            --card-bg: rgba(0, 0, 0, 0.8);
+            --text-color: #00ff41; /* Verde "terminal" */
+            --accent-color: #ffcc00; /* Amarelo cartão */
+        }
+
         body {
-            background-color: #0d0d0d; /* Fundo muito escuro */
-            color: #00ff41; /* Cor verde "Matrix" */
-            font-family: 'Consolas', 'Monospace', monospace; /* Fonte monoespaçada */
-            padding: 20px;
-            font-size: 1.2em;
-            line-height: 1.4;
-            overflow: hidden; /* Evita barras de scroll desnecessárias */
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto Mono', monospace;
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: flex-start;
-            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: var(--text-color);
+            overflow: hidden;
+            background-color: #111;
         }
 
-        .log-line {
-            opacity: 0;
-            margin-bottom: 5px;
-            transition: opacity 1s ease-in-out; /* Transição suave para o aparecimento */
-        }
-
-        /* Estilos específicos para a revelação (o "Bug") */
-        .error {
-            color: #ff0000; /* Cor vermelha para o erro */
-            font-weight: bold;
-            font-size: 1.4em;
-            text-shadow: 0 0 10px #ff0000;
-        }
-
-        .analysis {
-            color: #00ffff; /* Cor ciano para a análise da psicóloga */
-            font-style: italic;
-        }
-
-        .referee {
-            color: #ffff00; /* Cor amarela para o árbitro */
-            font-weight: bold;
-            font-size: 1.6em;
-            text-align: center;
+        .futsal-court {
+            position: absolute;
             width: 100%;
-            margin-top: 30px;
-            padding: 10px;
-            border: 3px solid #ffff00;
-            animation: blink 1s infinite; /* Animação de piscar para o cartão */
+            height: 100%;
+            background-color: var(--court-color);
+            opacity: 0.15;
+            z-index: -1;
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        .center-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20vh;
+            height: 20vh;
+            border: 4px solid var(--lines-color);
+            border-radius: 50%;
+        }
+
+        .center-line {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background-color: var(--lines-color);
+        }
+
+        .reveal-card {
+            background-color: var(--card-bg);
+            border: 2px solid var(--text-color);
+            border-radius: 10px;
+            padding: 2em;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 0 20px var(--text-color);
+            position: relative;
+        }
+
+        .stage {
+            display: none; /* Esconde todas as etapas por defeito */
+        }
+
+        .stage.active {
+            display: block;
+        }
+
+        h1, h2 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--lines-color);
+            margin: 0.5em 0;
+        }
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+        
+        .typing {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: .15em solid var(--text-color);
+            animation: typing 2s steps(40, end), blink-caret .75s step-end infinite;
+            width: 0;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--text-color); }
+        }
+
+        .analysis-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 2em 0;
+            gap: 1em;
+        }
+
+        .analysis-box {
+            flex: 1;
+            padding: 1em;
+            border: 1px dashed var(--text-color);
+        }
+
+        .analysis-box h3 {
+            color: var(--accent-color);
+            margin-top: 0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            background-color: #333;
+            border-radius: 5px;
+            overflow: hidden;
+            height: 20px;
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background-color: var(--text-color);
+            animation: load 3s ease-in-out forwards;
+        }
+
+        @keyframes load {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        .final-reveal {
+            font-size: 3em;
+            font-family: 'Poppins', sans-serif;
+            color: var(--accent-color);
+            animation: fadeIn 2s, scaleUp 1s;
+        }
+
+        .footprint {
+            font-size: 5em;
+            animation: stamp 1.5s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+            opacity: 0;
+        }
+        
+        @keyframes stamp {
+            0% { transform: scale(3); opacity: 0; }
+            60% { transform: scale(0.9); opacity: 1; }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes scaleUp {
+            from { transform: scale(0.5); }
+            to { transform: scale(1); }
+        }
+
+        button {
+            background-color: var(--accent-color);
+            color: #111;
+            border: none;
+            padding: 15px 30px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 1em;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--accent-color);
         }
     </style>
 </head>
 <body>
 
-    <div id="terminal-output">
+    <div class="futsal-court">
+        <div class="center-line"></div>
+        <div class="center-circle"></div>
+    </div>
+    
+    <!-- NOVO: Elemento de áudio para o som do apito -->
+    <audio id="whistleSound" src="https://actions.google.com/sounds/v1/sports/whistle_blowing_2.ogg" preload="auto"></audio>
+
+    <div class="reveal-card">
+        <!-- Etapa 0: Início -->
+        <div id="stage-0" class="stage active">
+            <h1>O jogo vai começar...</h1>
+            <p>Um anúncio do árbitro e da árbitra.</p>
+            <button onclick="startReveal()">PIIIII! (Apito Inicial)</button>
         </div>
 
+        <!-- Etapa 1: A Análise -->
+        <div id="stage-1" class="stage">
+            <h2>Processando Nova Diretiva...</h2>
+            <div class="analysis-container">
+                <div class="analysis-box">
+                    <h3>Análise Lógica</h3>
+                    <p>> User: Informático</p>
+                    <p>> Status: Compilando futuro...</p>
+                    <div class="progress-bar"><div class="progress"></div></div>
+                </div>
+                <div class="analysis-box">
+                    <h3>Análise Emocional</h3>
+                    <p>> User: Psicóloga</p>
+                    <p>> Status: Mapeando emoções...</p>
+                    <div class="progress-bar"><div class="progress"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Etapa 2: O Veredicto -->
+        <div id="stage-2" class="stage">
+            <h2 class="typing">Processo 100% Concluído.</h2>
+            <p style="animation: fadeIn 2s ease 2s; opacity: 0; animation-fill-mode: forwards;">
+                Ambas as análises chegaram a uma conclusão unânime.
+            </p>
+            <p style="color: var(--accent-color); animation: fadeIn 2s ease 3s; opacity: 0; animation-fill-mode: forwards;">
+                Veredicto Final...
+            </p>
+        </div>
+
+        <!-- Etapa 3: A Grande Revelação -->
+        <div id="stage-3" class="stage">
+            <p>A nossa equipa vai ter um novo membro!</p>
+            <h1 class="final-reveal">VAMOS SER PAIS!</h1>
+            <div class="footprint">👣</div>
+        </div>
+        
+        <!-- Etapa 4: Conclusão -->
+        <div id="stage-4" class="stage">
+             <h2>O jogo mais importante das nossas vidas vai começar!</h2>
+             <p>Chegada prevista: <strong>Maio 2026</strong></p> <!-- <<< ALTERE A DATA AQUI -->
+        </div>
+
+    </div>
+
     <script>
-        const terminalOutput = document.getElementById('terminal-output');
-        // Usar '\u2713' para o símbolo de 'tick' (certo)
-        // Usar '\u2717' para o símbolo de 'cross' (errado)
-
-        const lines = [
-            '[\u2713] Inicializando Sistema Operacional Familiar (SOF) v2.0...',
-            '[\u2713] Verificando Nível de Dependência...',
-            '[\u2713] Módulo Arbitragem carregado. Regras estritas aplicadas.',
-            '[\u2713] Módulo Psicologia carregado. Análise de humor iniciada.',
-            '[\u2713] Processando rotinas diárias. Tudo OK.',
-            '[\u2717] AVISO CRÍTICO: DETETADA MUDANÇA DE ESTADO NO KERNEL.',
-            '<span class="error">[\u2717] ERRO FATAL: Falha na Verificação da Capacidade do Sistema.</span>',
-            '<span class="error">Causa: Novo Pacote de Dependência (BEBÉ.zip) detetado no SOF.</span>',
-            '<span class="error">Data Prevista: MAIO/2026</span>',
-            '<span class="analysis">*** ANÁLISE PSICOLÓGICA (POST-MORTEM) ***</span>',
-            '<span class="analysis">Sintoma: Ansiedade de Ninho e Pesquisas Compulsivas (Carrinhos de Bebé).</span>',
-            '<span class="analysis">Diagnóstico: Crise Existencial Positiva. Solução: Adaptação URGENTE.</span>',
-            '<span class="referee">$$$ DECISÃO DO ÁRBITRO: CARTÃO AMARELO (NOITES MAL DORMIDAS) $$$</span>',
-            '<span class="referee">*** O JOGO MUDOU! A EQUIPA VAI SER REFORÇADA! ***</span>'
-        ];
-
-        let index = 0;
-
-        function displayNextLine() {
-            if (index < lines.length) {
-                const newLine = document.createElement('div');
-                newLine.className = 'log-line';
-                // Usamos innerHTML para permitir as tags <span> dentro do array lines
-                newLine.innerHTML = lines[index];
-                terminalOutput.appendChild(newLine);
-
-                // Força o reflow para garantir a animação
-                void newLine.offsetWidth;
-                newLine.style.opacity = 1;
-
-                index++;
-                
-                // Tempo de espera entre cada linha (mais longo para as de erro/revelação)
-                let delay = 1000; // 1 segundo
-                if (lines[index - 1].includes('ERRO FATAL') || lines[index - 1].includes('DECISÃO DO ÁRBITRO')) {
-                    delay = 2000; // 2 segundos para as linhas importantes
-                }
-                
-                setTimeout(displayNextLine, delay);
-            }
+        function showStage(stageId) {
+            // Esconde todas as etapas
+            document.querySelectorAll('.stage').forEach(stage => {
+                stage.classList.remove('active');
+            });
+            // Mostra a etapa desejada
+            document.getElementById(stageId).classList.add('active');
         }
 
-        // Inicia o processo após um pequeno atraso
-        setTimeout(displayNextLine, 500); 
+        function startReveal() {
+            // --- CÓDIGO DE ÁUDIO MELHORADO ---
+            const whistle = document.getElementById('whistleSound');
+            const playPromise = whistle.play();
+
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    // Não fazemos nada se falhar, a animação continua
+                    console.error("Erro ao tocar o áudio:", error);
+                });
+            }
+            // --- FIM DO CÓDIGO DE ÁUDIO ---
+
+            // Etapa 1: Análise
+            showStage('stage-1');
+            
+            // Etapa 2: Veredicto (após 4 segundos)
+            setTimeout(() => {
+                showStage('stage-2');
+            }, 4000);
+
+            // Etapa 3: Revelação (após 8 segundos)
+            setTimeout(() => {
+                showStage('stage-3');
+            }, 8500);
+            
+            // Etapa 4: Conclusão (após 12 segundos)
+            setTimeout(() => {
+                showStage('stage-4');
+            }, 12500);
+        }
     </script>
 
 </body>

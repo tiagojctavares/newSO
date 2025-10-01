@@ -37,6 +37,10 @@
             z-index: -1;
         }
 
+        .center-circle, .center-line {
+            animation: glow 2s infinite alternate;
+        }
+
         .center-circle {
             position: absolute;
             top: 50%;
@@ -58,6 +62,11 @@
             background-color: var(--lines-color);
         }
 
+        @keyframes glow {
+            from { box-shadow: 0 0 5px var(--lines-color); }
+            to { box-shadow: 0 0 20px var(--lines-color); }
+        }
+
         .reveal-card {
             background-color: var(--card-bg);
             border: 2px solid var(--text-color);
@@ -68,14 +77,18 @@
             text-align: center;
             box-shadow: 0 0 20px var(--text-color);
             position: relative;
+            z-index: 2;
         }
 
         .stage {
-            display: none; /* Esconde todas as etapas por defeito */
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
         }
 
         .stage.active {
             display: block;
+            opacity: 1;
         }
 
         h1, h2 {
@@ -150,16 +163,20 @@
             font-size: 3em;
             font-family: 'Poppins', sans-serif;
             color: var(--accent-color);
-            animation: fadeIn 2s, scaleUp 1s;
+            animation: fadeIn 2s, scaleUp 1s, heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
         .footprint {
             font-size: 5em;
             animation: stamp 1.5s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
             opacity: 0;
-            /* --- ESTA É A CORREÇÃO --- */
-            color: transparent; /* Esconde o emoji original */
-            text-shadow: 0 0 0 var(--accent-color); /* Cria uma "sombra" colorida no lugar */
+            color: transparent; 
+            text-shadow: 0 0 0 var(--accent-color); 
         }
         
         @keyframes stamp {
@@ -196,6 +213,24 @@
             transform: scale(1.05);
             box-shadow: 0 0 15px var(--accent-color);
         }
+
+        /* Confetes */
+        .confetti {
+            position: absolute;
+            top: -10px;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            opacity: 0.7;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -207,13 +242,12 @@
 
     <div class="reveal-card">
         <!-- Etapa 0: Início -->
-        <div id="stage-0" class="stage active">
+        <div id="stage-0" class="stage active" style="opacity:1;">
             <h1>O jogo vai começar...</h1>
             <p>A melhor dupla de árbitros tem um anúncio a fazer.</p>
             <button onclick="startReveal()">PIIIII! (Apito Inicial)</button>
         </div>
 
-        <!-- O resto do HTML continua exatamente igual -->
         <div id="stage-1" class="stage">
             <h2>Processando novas instruções...</h2>
             <div class="analysis-container">
@@ -250,9 +284,13 @@
         
         <div id="stage-4" class="stage">
              <h2>O jogo mais importante das nossas vidas vai começar!</h2>
-             <p>Chegada prevista: <strong>Maio 2026</strong></p> <!-- <<< ALTERE A DATA AQUI -->
+             <p style="color: gold; animation: blink-caret 1s infinite;">Chegada prevista: <strong>Maio 2026</strong></p>
         </div>
     </div>
+
+    <!-- Sons -->
+    <audio id="whistle" src="apito.wav" preload="auto"></audio>
+    <audio id="cheer" src="torcida.wav" preload="auto"></audio>
 
     <script>
         function showStage(stageId) {
@@ -262,7 +300,24 @@
             document.getElementById(stageId).classList.add('active');
         }
 
+        function createConfetti() {
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                document.body.appendChild(confetti);
+
+                const colors = ['#ffcc00', '#00ff41', '#ffffff', '#ff4081', '#00bcd4'];
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
         function startReveal() {
+            document.getElementById('whistle').play();
             showStage('stage-1');
             
             setTimeout(() => {
@@ -271,6 +326,8 @@
 
             setTimeout(() => {
                 showStage('stage-3');
+                document.getElementById('cheer').play();
+                createConfetti();
             }, 8500);
             
             setTimeout(() => {
